@@ -25,14 +25,18 @@ Pattern: MVC (Model-View-Controller) + Service Layer
 
 Route → Controller → Service → Model
 
-    Layers:
+ Layers:
 1⃣ Routes – API endpoints, apply middleware (auth, validation, rate limiting).
+
 2⃣ Controllers – Handle requests & responses, call service layer, return JSON.
+
 3 Services – Business logic (orders, reviews, AI, calculations).
+
 4⃣ Models – MongoDB schemas (User, Product, Store, Order, SubOrder, Review, etc.).
+
 5⃣ Middleware – Authentication, RBAC, error handling, file upload, rate limiting.
 
-    Key Features:
+ Key Features:
 . Centralized error handling & logging
 . JWT access & refresh tokens
 . Order splitting per vendor
@@ -41,17 +45,17 @@ Route → Controller → Service → Model
 
  3️⃣   Project Structure:
 Multi-Vendor-Ecommerce/
-├── config/
-├── controllers/
-├── services/
-├── models/
-├── routes/
-├── middlewares/
-├── utils/
-├── uploads/
-├── app.js
-├── server.js
-└── README.md
+.├── config/
+.├── controllers/
+.├── services/
+.├── models/
+.├── routes/
+.├── middlewares/
+.├── utils/
+.├── uploads/
+.├── app.js
+.├── server.js
+.└── README.md
 
 4️⃣  Core Logic & Order Flow:
 
@@ -68,6 +72,7 @@ Reviews:
   . Product rating auto-updates with review changes
   
 5️⃣ Authentication & Security
+
 . JWT Tokens: Access + Refresh for secure sessions
 . Email Verification: Confirm user email on registration
 . Password Reset: Secure reset via email link
@@ -76,7 +81,9 @@ Reviews:
       .Specific: Login, Register, Refresh token endpoints
 . Centralized Error Handling: Detect and handle all API errors
 . Logging: Tracks server errors for debugging  
+
 7️⃣ Features & Highlights
+
 User Management: Registration, login, email verification, password reset
 Role-Based Access: Customer, Seller, Admin, SuperAdmin
 Multi-Vendor Orders: Parent orders and vendor-level suborders
@@ -93,7 +100,7 @@ Scalable MVC structure
 
 8️⃣ Technology & Run
 
-    Tech Stack:
+Tech Stack:
 Node.js + Express.js (MVC)
 MongoDB (Mongoose)
 JWT (access + refresh)
@@ -103,7 +110,8 @@ git clone https://github.com/degu-123/MultiVendor-Commerce-API.git
 cd MultiVendor-Commerce-API
 npm install
 
-    Create .env with:
+ Create .env with:
+ 
 PORT=3000
 MONGO_URI=<your-mongo-uri>
 JWT_ACCESS_SECRET=<secret>
@@ -117,17 +125,23 @@ npm run dev   # development
 npm start     # production
 
 9️⃣ API Endpoints Overview
+
 Base URL: http://localhost:3000/api/v1
 Auth: register, login, refresh, logout, verify-email, forgot/reset password
+
 Users: me (get/update profile, change password, upload avatar), admin routes (view/ban/delete/make-admin)
+
 Products & Catalogs: browse products/catalogs, seller creates/updates/deletes products
+
 Cart: view cart, add/update/remove items, checkout
 Orders: user orders, seller sub-orders, admin full orders management
+
 Reviews: customer create/update/delete, public view product reviews, admin detailed reviews
 🔹 All endpoints are JWT protected where required.
 🔹 Pagination used for lists (page & limit query params).
 🔹 Role-based access: customer, seller, admin, superAdmin.
 
-    Author
+ Author
+ 
 Developed by Degu Kebede
 Backend Developer | MERN Stack Enthusiast
