@@ -4,19 +4,25 @@ const Product = require('../models/productModel');
 const Order=require('../models/orderModel');
 const SubOrder = require('../models/subOrderModel');
 const AppError=require('../utils/AppError');
+const Store =require('../models/storeModel');
 
 async function addItemToCart(userId, productId, quantity = 1){
   
   const qty = quantity > 0 ? quantity : 1;
   
 //find product check status
-  const product = await Product.findById(productId);
+  const product = await Product.findById(productId).populate('storeId');
   if (!product || !product.isActive||product.isDeleted||product.isBanned) {
     throw new AppError('Product not available');
   }
   if (qty > product.stock) {
-    throw new Error('Insufficient stock');
+    throw new AppError('Insufficient stock');
   }
+if (!product.storeId || product.storeId.status !== 'active') {
+  throw new AppError(
+    'Cannot add product to cart: Store is currently suspended.'
+  );
+}
   //  Get or create active cart
   let cart = await Cart.findOne({ user: userId, status: 'active' });
   if (!cart) {
@@ -249,6 +255,20 @@ async function checkoutService(userId,shippingAddress, confirmPriceChange = fals
 
       stores[storeId].push(item);
     }
+  //Validate store status (Prevent suspended store orders)
+const storeIds = Object.keys(stores);
+
+const storeList = await Store.find({
+  _id: { $in: storeIds }
+}).session(session);
+
+for (const store of storeList) {
+  if (store.status !== "active") {
+    throw new AppError(
+      `One of the stores in your cart is currently suspended. Please remove its products.`
+    );
+  }
+}
 
     // 6️⃣ Create Main Order Snapshot
     const mainOrderItems = cart.items.map(item => ({
